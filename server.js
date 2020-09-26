@@ -25,24 +25,73 @@ function listening() {
   console.log('server running');
   console.log(`listening on localhost: ${port}`);
 }
-/* Debugging
-
-// Callback to debug
-function debugGet(req, res) {
-  res.send('hello I did a GET');
-}
-function debugPost(req, res) {
-  res.send('hello I did a POST');
-}
-
-// GET AND POSTS for Debugging
-// app.get('/all', debugGet);
-// app.post('/purple', debugPost);
-   End Debugging */
 
 // Initialize all route with a callback function
 
-// Callback function to complete GET '/all'
+
+// GET Route for OneWeatherMap API
+// Grabs weather data when user clicks Generate button
+let baseURL = '';
+let apiKey = '';
+// listen on Generate button to trigger getWeatherData fxn
+document.getElementById('generate').addEventListener('click', getWeatherData);
+
+function getWeatherData (e) {
+  const newWeatherLocation = document.getElementById('zip').value;
+  getWeather(baseURL, newWeatherLocation, apiKey)
+}
+
+const getWeather = async (baseURL, location, key) => {
+  const res = await fetch(baseURL + location + key)
+      try { const data = await res.json();
+      console.log(data);
+      return data;
+  } catch (error) {
+    console.log('error ', error);
+    //appropriately handle error
+  }
+    }
+
+// GET Route for storing data ???
+const weatherData = [];
+app.get('/all' ,getData);
+function getData (req, res) {
+  res.send(weatherData);
+  console.log(weatherData);
+}
 
 
 // Post Route
+
+// To handle posting of data ??
+
+const postData = async(url='', data = {} => {
+  method: 'POST',
+  credentials: 'same-origin',
+  headers: {
+    'content-type' : 'application/json',
+    }
+    body: JSON.stringify(data),
+});
+try {
+  const newData = await response.json();
+  return newData
+  } catch (error) {
+    console.log('error ', error);
+    //appropriately handle error
+  }
+
+// To handle updating of UI and object with returned data ??
+
+app.post('/', addWeather);
+
+function addWeather(req, res) {
+  newEntry = {
+    temperature: req.body.temperature,
+    date: req.body.date,
+    userResponse: req.body.userResponse
+  }
+  projectData.push(newEntry),
+  res.send(projectData),
+  console.log(projectData),
+}
