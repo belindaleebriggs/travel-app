@@ -25,7 +25,9 @@ function listening() {
   console.log('server running');
   console.log(`listening on localhost: ${port}`);
 }
-/* Debugging
+
+
+// Debugging
 
 // Callback to debug
 function debugGet(req, res) {
@@ -36,9 +38,11 @@ function debugPost(req, res) {
 }
 
 // GET AND POSTS for Debugging
-// app.get('/all', debugGet);
-// app.post('/purple', debugPost);
-   End Debugging */
+app.get('/all', debugGet);
+app.post('/purple', debugPost);
+
+
+//   End Debugging
 
 // Initialize all route with a callback function
 
