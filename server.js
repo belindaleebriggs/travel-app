@@ -1,5 +1,5 @@
 // Setup empty JS object to act as endpoint for all routes
-projectData = {};
+projectData = {}; // may need to set to an array
 // Express to run server and routes
 const express = require('express');
 
@@ -27,71 +27,24 @@ function listening() {
 }
 
 // Initialize all route with a callback function
+app.get('/all', sendData);
 
-
-// GET Route for OneWeatherMap API
-// Grabs weather data when user clicks Generate button
-let baseURL = '';
-let apiKey = '';
-// listen on Generate button to trigger getWeatherData fxn
-document.getElementById('generate').addEventListener('click', getWeatherData);
-
-function getWeatherData (e) {
-  const newWeatherLocation = document.getElementById('zip').value;
-  getWeather(baseURL, newWeatherLocation, apiKey)
+// Callback function for GET /all, returns projectData
+function sendData(req,res) {
+  req.send(projectData);
+  projectData = {};  // may need to set to an array
 }
 
-const getWeather = async (baseURL, location, key) => {
-  const res = await fetch(baseURL + location + key)
-      try { const data = await res.json();
-      console.log(data);
-      return data;
-  } catch (error) {
-    console.log('error ', error);
-    //appropriately handle error
-  }
-    }
+// POST Route for adding data
+app.post('/add', addData);
 
-// GET Route for storing data ???
-const weatherData = [];
-app.get('/all' ,getData);
-function getData (req, res) {
-  res.send(weatherData);
-  console.log(weatherData);
-}
-
-
-// Post Route
-
-// To handle posting of data ??
-
-const postData = async(url='', data = {} => {
-  method: 'POST',
-  credentials: 'same-origin',
-  headers: {
-    'content-type' : 'application/json',
-    }
-    body: JSON.stringify(data),
-});
-try {
-  const newData = await response.json();
-  return newData
-  } catch (error) {
-    console.log('error ', error);
-    //appropriately handle error
-  }
-
-// To handle updating of UI and object with returned data ??
-
-app.post('/', addWeather);
-
-function addWeather(req, res) {
+function addData(req, res) {
   newEntry = {
     temperature: req.body.temperature,
     date: req.body.date,
-    userResponse: req.body.userResponse
+    feelings: req.body.feelings,
   }
-  projectData.push(newEntry),
-  res.send(projectData),
-  console.log(projectData),
+  projectData.push(newEntry);
+  // res.send(projectData);
+  console.log(projectData);
 }
