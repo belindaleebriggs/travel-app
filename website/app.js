@@ -36,7 +36,7 @@ function performAction(e){
     .then(function(data) {
       console.log(data);
       // Add data to data object in server.js via POST request
-      postData('/add',{date:d,temp:data.body.temp,feelings:feelings});
+      postData('/add',{date:d,temp:data.main.temp,feelings:feelings});
       updateUI();
     });
 }
