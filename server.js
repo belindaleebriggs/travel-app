@@ -26,25 +26,28 @@ function listening() {
   console.log(`listening on localhost: ${port}`);
 }
 
-// Initialize all route with a callback function
-app.get('/all', sendData);
-
 // Callback function for GET /all, returns projectData
 function sendData(req,res) {
   req.send(projectData);
   projectData = {};  // may need to set to an array
 }
 
-// POST Route for adding data
-app.post('/add', addData);
+// Initialize all route with a callback function
+app.get('/all', sendData);
 
+// POST Route for adding data
 function addData(req, res) {
+  const newData = req.body;
+    console.log(`newData is ${newData}`);
   newEntry = {
-    temperature: req.body.temperature,
-    date: req.body.date,
-    feelings: req.body.feelings,
+    temperature: newData.temperature,
+    date: newData.date,
+    feelings: newData.feelings,
   }
-  projectData.push(newEntry);
+
+  //projectData.push(newEntry);
   // res.send(projectData);
   console.log(projectData);
-}
+};
+
+app.post('/add', addData);

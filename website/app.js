@@ -36,7 +36,7 @@ function performAction(e){
     .then(function(data) {
       console.log(data);
       // Add data to data object in server.js via POST request
-      postData('/add',{date:d,temp:data.main.temp,feelings:feelings});
+      postData('/add',{date:d, feelings:feelings, temp:data.main.temp});
       updateUI();
     });
 }
@@ -45,6 +45,7 @@ function performAction(e){
 
 // Process a post request
 const postData = async(url='', data = {}) => {
+  console.log(`url is ${url}`);
   console.log(data);
   const response = await fetch(url, {
   method: 'POST',
@@ -56,6 +57,7 @@ const postData = async(url='', data = {}) => {
 });
 try {
   const newData = await response.json();
+  console.log(newData);
   return newData
   } catch (error) {
     console.log('error ', error);
