@@ -37,8 +37,10 @@ function performAction(e){
       console.log(data);
       // Add data to data object in server.js via POST request
       postData('/add',{date:d, feelings:feelings, temp:data.main.temp});
-      updateUI();
-    });
+    })
+    .then(
+          updateUI()
+    )
 }
 
 
@@ -56,7 +58,7 @@ const postData = async(url='', data = {}) => {
     body: JSON.stringify(data),
 });
 try {
-  const newData = await response.text();
+  const newData = await response.json();
   console.log(newData);
   return newData
   } catch (error) {
