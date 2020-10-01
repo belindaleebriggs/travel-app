@@ -12,11 +12,9 @@ let apiKey = '&appid=ce49415b2eb93662f798d48a60e01961';
 // function to make API call to openweathermap
 const getWeather = async (baseURL, location, key) => {
   const apiUrl = baseURL + location + key;
-  console.log(apiUrl);
   const res = await fetch(apiUrl)
     try { const data = await res.json();
       return data;
-      console.log(data);
     } catch (error) {
       console.log('error ', error);
           //appropriately handle error
@@ -69,9 +67,11 @@ try {
 
 // Function to update the UI with the addData
 const updateUI = async() => {
-  const request = await fetch('/all')
+  const request = await fetch('/all');
+  console.log(`UpdateUI Request: ${request}`);
   try {
     const allData = await request.json()
+    console.log(`UpdateUI allData: ${allData}`);
     document.getElementById('date').innerHTML = `Date: ${allData[0].date}`;
     document.getElementById('temp').innerHTML = `Temp: ${allData[0].temp}`;
     document.getElementById('content').innerHTML = `You are feeling: ${allData[0].feelings}`;

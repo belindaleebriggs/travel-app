@@ -28,8 +28,7 @@ function listening() {
 
 // Callback function for GET /all, returns projectData
 function sendData(req,res) {
-  req.send(projectData);
-  projectData = {};  // may need to set to an array
+  res.send(projectData);
 }
 
 // Initialize all route with a callback function
