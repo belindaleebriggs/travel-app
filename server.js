@@ -43,6 +43,8 @@ function addData(req, res) {
       projectData["userResponse"] = data[1];
       projectData["temperature"] = data[2];
       res.send(projectData);
+      logProjectData = Object.values(projectData);
+      console.log(`Project Data is: ${logProjectData}`);
   }
 
 app.post('/add', addData);

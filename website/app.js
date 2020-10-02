@@ -34,7 +34,12 @@ function performAction(e){
     .then(function(data) {
       console.log(data);
       // Add data to data object in server.js via POST request
-      postData('/add',{date:d, feelings:feelings, temp:data.main.temp});
+      const dataObject = {
+        date:d,
+        feelings:feelings,
+        temp:data.main.temp
+      }
+      postData('/add',dataObject);
     })
     .then(
           updateUI()
