@@ -75,9 +75,10 @@ const updateUI = async() => {
   try {
     const allData = await request.json()
     console.log(`UpdateUI allData: ${Object.values(allData)}`);
+    console.log(`Temp: ${allData.temperature}`);
     document.getElementById('date').innerHTML = `Date: ${allData.date}`;
-    document.getElementById('temp').innerHTML = `Temp: ${allData.temp}`;
-    document.getElementById('content').innerHTML = `You are feeling: ${allData.feelings}`;
+    document.getElementById('temp').innerHTML = `Temp: ${allData.temperature}`;
+    document.getElementById('content').innerHTML = `You are feeling: ${allData.userResponse}`;
   } catch (error) {
     console.log('error ', error);
     //appropriately handle error
