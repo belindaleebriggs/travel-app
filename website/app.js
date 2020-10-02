@@ -82,7 +82,9 @@ const updateUI = async() => {
     document.getElementById('content').innerHTML = `You are feeling: ${allData.userResponse}`;
   } catch (error) {
     console.log('error ', error);
-    //appropriately handle error
+    document.getElementById('date').innerHTML = `Date: no data received`;
+    document.getElementById('temp').innerHTML = `Temp: no data received`;
+    document.getElementById('content').innerHTML = `You are feeling: no data received`;
   }
 
 
