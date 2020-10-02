@@ -39,9 +39,9 @@ function addData(req, res) {
       const data = req.body;
       logData = Object.values(data);
       console.log(`Request Body is: ${logData}`);
-      projectData["temperature"] = data.temperature;
-      projectData["date"] = data.date;
-      projectData["userResponse"] = data.userResponse;
+      projectData["date"] = data[0];
+      projectData["userResponse"] = data[1];
+      projectData["temperature"] = data[2];
       res.send(projectData);
   }
 
