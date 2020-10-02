@@ -37,14 +37,12 @@ app.get('/all', sendData);
 // POST Route for adding data
 function addData(req, res) {
       const data = req.body;
-      logData = Object.values(data);
-      console.log(`Request Body is: ${logData}`);
-      projectData["date"] = data[0];
-      projectData["userResponse"] = data[1];
-      projectData["temperature"] = data[2];
+      console.log(`Request Body is: ${Object.values(data)}`);
+      projectData["date"] = data.date;
+      projectData["userResponse"] = data.feelings;
+      projectData["temperature"] = data.temp;
       res.send(projectData);
-      logProjectData = Object.values(projectData);
-      console.log(`Project Data is: ${logProjectData}`);
+      console.log(`Project Data is: ${Object.values(projectData)}`);
   }
 
 app.post('/add', addData);

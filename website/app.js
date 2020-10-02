@@ -50,8 +50,6 @@ function performAction(e){
 
 // Process a post request
 const postData = async(url='', data = {}) => {
-  console.log(`url is ${url}`);
-  console.log(data);
   const response = await fetch(url, {
   method: 'POST',
   credentials: 'same-origin',
@@ -62,7 +60,7 @@ const postData = async(url='', data = {}) => {
 });
 try {
   const newData = await response.json();
-  console.log(newData);
+  console.log(`NewData is ${Object.values(newData)}`);
   return newData
   } catch (error) {
     console.log('error ', error);
@@ -73,13 +71,12 @@ try {
 // Function to update the UI with the addData
 const updateUI = async() => {
   const request = await fetch('/all');
-  console.log(`UpdateUI Request: ${request}`);
   try {
     const allData = await request.json()
-    console.log(`UpdateUI allData: ${allData}`);
-    document.getElementById('date').innerHTML = `Date: ${allData[0].date}`;
-    document.getElementById('temp').innerHTML = `Temp: ${allData[0].temp}`;
-    document.getElementById('content').innerHTML = `You are feeling: ${allData[0].feelings}`;
+    console.log(`UpdateUI allData: ${Object.values(allData)}`);
+    document.getElementById('date').innerHTML = `Date: ${allData.date}`;
+    document.getElementById('temp').innerHTML = `Temp: ${allData.temp}`;
+    document.getElementById('content').innerHTML = `You are feeling: ${allData.feelings}`;
   } catch (error) {
     console.log('error ', error);
     //appropriately handle error
