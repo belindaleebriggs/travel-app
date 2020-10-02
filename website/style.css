@@ -6,15 +6,16 @@ body{
 
 #app{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr .25fr;
     grid-template rows: auto:
+    column-gap: 15px;
     height:100vh;
     background: #f23557;
     color: #f0d43a;
     justify-content: center;
-    grid-gap: 1em;
+    grid-gap: .5em;
     font-family: 'Oswald', sans-serif;
-    padding: 20px 10px;
+    padding: 15px;
 }
 
 .headline {
