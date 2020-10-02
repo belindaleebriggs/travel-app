@@ -41,8 +41,9 @@ function performAction(e){
       }
       postData('/add',dataObject);
     })
-    .then(
-          updateUI()
+    .then (function(){
+        updateUI();
+      }
     )
 }
 
