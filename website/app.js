@@ -11,7 +11,8 @@ let apiKey = '&appid=ce49415b2eb93662f798d48a60e01961';
 
 // function to make API call to openweathermap
 const getWeather = async (baseURL, location, key) => {
-  const apiUrl = baseURL + location + key;
+  let units = '&units=imperial';
+  const apiUrl = baseURL + location + key + units;
   const res = await fetch(apiUrl)
     try { const data = await res.json();
       return data;
