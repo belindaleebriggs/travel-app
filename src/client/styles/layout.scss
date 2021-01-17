@@ -21,7 +21,7 @@ section {
 #app{
     display: grid;
     grid-template-columns: 1fr 1fr .25fr;
-    grid-template rows: auto:
+    grid-template-rows: auto;
     column-gap: 15px;
     height:100vh;
     background: #f23557;
