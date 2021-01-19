@@ -1,4 +1,59 @@
 /* Global Variables */
+// designates what port the app will listen to for incoming requests
+// Change when moving to environments (8080 dev, 8081 prod)
+const port = 8080
+
+async function handleSubmit(event) {
+    event.preventDefault()
+
+    // create object to hold form data
+    let formData = {};
+
+    // put data from form into an object to pass to API calling fxns
+    formData.destination = document.getElementById('destination').value;
+    formData.departureDate = document.getElementById('departureDate').value;
+
+  
+  // Reset answer area to clear out formatting if entering a new url
+    var results = document.getElementById('destinationResults');
+    results.innerHTML = "Your results will appear here.";
+ 
+        console.log('Trying to launch getTripDetails from formHandler!')
+        await fetch(`http://localhost:${port}/getTripDetails`, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({formData: formData})
+            },)
+        // IF SENTIMENT API Returns the result back to formHandler use this to display the result
+        // Although may be able to just display in SentimentAPI.js, unsure best method
+
+        // THIS AREA NEEDS WORK
+            .then(res => res.json()) 
+            .then(function(res) {
+                var resultsSection = document.getElementById('resultsSection');
+                var results = document.getElementById('results');
+                updateUI(res, resultsSection, results) 
+            })
+            .catch(err => {
+                document.getElementById('errorMsg').innerHTML = 'Server Error: ' + err;
+            })
+      }
+
+
+      function updateUI(data, resultsSection, results) {
+            resultsSection.className += " " + 'answered';
+            results.innerHTML = `This ${data.truth_or_opinion.toLowerCase()}ly written content earned a postitivity rating of ${data.positivity}.`;
+      }
+
+export { handleSubmit, updateUI }
+
+
+
+
+// ORIGINAL APP.JS
 
 // Create a new date instance dynamically with JS
 let d = new Date();
@@ -10,9 +65,9 @@ let baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 let apiKey = '&appid=ce49415b2eb93662f798d48a60e01961';
 
 // function to make API call to openweathermap
-const getWeather = async (baseURL, location, key) => {
+const getWeather = async (baseURL, destination, key) => {
   let units = '&units=imperial';
-  const apiUrl = baseURL + location + key + units;
+  const apiUrl = baseURL + destination + key + units;
   const res = await fetch(apiUrl)
     try { const data = await res.json();
       return data;

@@ -16,26 +16,30 @@
 
   <main>
     <div id = "app">
-      <div class ="holder headline">
-      Travel App
-     </div>
-     <div class ="holder zip">
-       <label for="zip">Enter Zipcode here</label>
-        <input type="text" id="zip" placeholder="enter zip code here">
-      </div>
-      <div class ="holder feel">
-        <label for="feelings">How are you feeling today?</label>
-        <textarea class= "myInput" id="feelings" placeholder="Enter your feelings here" rows="5" cols="50"></textarea>
-        <button id="generate" type = "submit"> Generate </button>
-      </div>
-      <div class ="holder entry">
-        <div class = "title">Most Recent Entry</div>
-        <div id = "entryHolder">
-          <div id = "date"></div>
-          <div id = "temp"></div>
-          <div id = "content"></div>
+    <section id="form">
+      <h1 class ="holder headline">Travel App</h1>
+      <form class="" onsubmit="return Client.handleSubmit(event)">
+        <div class ="holder tripDestination">
+          <label for="destination">Enter Travel Destination here</label>
+          <input type="text" id="destination" placeholder="type city name here" required>
         </div>
-      </div>
+        <div class ="holder tripDetails">
+          <label for="departureDate">When are you going?</label>
+          <input type="date" class="myInput" id="departureDate" placeholder="Select your departure date" required>
+          <button id="generate" type="submit"> Get Trip Forecast </button>
+        </div>
+      </form>
+      
+      <section id="resultsSection">
+        <div class ="holder entry">
+          <div class = "title">Your Trip Details</div>
+          <div id = "entryHolder">
+            <div id = "destinationResults"></div>
+            <div id = "destinationImg"></div>
+            <div id = "weather"></div>
+          </div>
+        </div>
+      </section> 
     </div>
   </main>
  <footer>
