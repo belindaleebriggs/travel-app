@@ -1,45 +1,37 @@
-function getCoordinates(destination) {
+async function getCoordinates(req) {
   console.log("::: getCoordinates is querying Geonames API for the coordinates of : ", destination);
-  // Query Geonames API with destination
-  // put returned values for longitude and latitude into a new object called coordinates
-  // eg. let coordinates = { response.lat, 
-  //                         response.long  }
-  // return this object to the calling procedure
-   // CODE BELOW HERE NEEDS UPDATING
+  // Query Geonames API with destination to get it's longitude and latitude
+  let tripData = req.body;
   let baseURL = 'api.geonames.org/search?';
-  // let apiKey = '?key=' + process.env.GEONAMES_API_KEY; - no key in geonames just user name
   let user = '?user=' + process.env.GEONAMES_USER;
-  
+  let destination = req.body.formData.destination
   try { 
-        qryGeonames(baseURL, encodeURIComponent(req.body.formText), apiKey)
-        .then(function(data) {
+        let newData = qryGeonames(baseURL, encodeURIComponent(destination), user)
+        .then(function(newData) { 
   
           // Add data to data object in server.js via POST request
-          const dataObject = {
-              positivity: data.score_tag,
-              truth_or_opinion: data.subjectivity,
-              }
-          console.log(`Positivity Score : ${dataObject.positivity}`);
-          console.log(`Subjectivity Score : ${dataObject.truth_or_opinion}`);
-          console.log(dataObject)
-          res.send(dataObject)
+          tripData.lat = newData.lat;
+          tripData.long = newData.long;
+          console.log(`Trip Location Latitude: ${tripData.lat}`);
+          console.log(`Trip Location Latitude: ${tripData.long}`);
+          console.log(`Trip Data: ${tripData}`)
+          res.send(tripData)
           })
       } catch (error) {
           console.log('error ', error);
           //appropriately handle error
         } 
-      }
-  );
+};
   
   // FUNCTIONS CALLED TO FULFILL formHandler qryGeonames request
   // function to make API call to Geonames Sentiment API
-  async function qryGeonames(baseURL, url, key) {
+  async function qryGeonames(baseURL, destination, user) {
       console.log('Querying Geonames')
       const outputFormat = '&of=json';
-      const urlToEvaluate = '&url=' + url;
-      const model = '&model=example-model';
+      const name = '&name_equals=' + destination;
       const language = '&lang=en';
-      const apiUrl = baseURL + key + outputFormat + urlToEvaluate + model + language;
+      const returnRows = '&maxRows=1'
+      const apiUrl = baseURL + name + returnRows + language + outputFormat;
       console.log(apiUrl);
       const res = await fetch(apiUrl);
       try {
@@ -50,6 +42,3 @@ function getCoordinates(destination) {
         //appropriately handle error
       }
     }
-}
-
-export { getCoordinates }

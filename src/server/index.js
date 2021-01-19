@@ -1,9 +1,9 @@
 // Setup empty JS object to act as endpoint for all routes
-projectData = {}; // may need to set to an array
+tripData = {}; // DO I NEED THIS?
 
 // Express to run server and routes
 // Change when moving to environments (8080 dev, 8081 prod)
-const port = 8080;
+const port = 8081;
 
 /* Express to run server and routes */
 const express = require('express');
@@ -40,6 +40,11 @@ function listening() {
 
 console.log(__dirname)
 
+/* IMPORTED FUNCTIONS */
+const getCoordinates = require('./getCoordinates')
+const getForecast = require('./getForecast')
+const getDestinationImg = require('./getDestinationImg')
+
 
 /* ROUTES */
 app.get('/', function (req, res) {
@@ -50,14 +55,20 @@ app.get('/', function (req, res) {
 
 // Route used by formHandler to access call to Geonames API via getCoordinates.js
 app.post('/getTripDetails', function(req, res) {
-  res.send(getTripDetails)
-});
+  try {
+  getTripDetails(req.body) 
+  .then((data) => { res.send(data)});
+} catch (error) {
+  console.log('error ', error);
+  //appropriately handle error
+  } 
+})
 
-async function getTripDetails(req) {
+async function getTripDetails(tripData) {
   try {
     await getCoordinates(res);
-    await  getForecast(res);
-    await  getLocationImg(res);
+    await getForecast(res);
+    await getDestinationImg(res);
     return res; // do i need this?
   } catch(error) {
     console.log('error ', error);

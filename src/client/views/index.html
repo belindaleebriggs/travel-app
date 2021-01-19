@@ -19,6 +19,7 @@
     <section id="form">
       <h1 class ="holder headline">Travel App</h1>
       <form class="" onsubmit="return Client.handleSubmit(event)">
+        <div id="tripErrorMsg" class="errorMsg"></div>
         <div class ="holder tripDestination">
           <label for="destination">Enter Travel Destination here</label>
           <input type="text" id="destination" placeholder="type city name here" required>
@@ -31,12 +32,12 @@
       </form>
       
       <section id="resultsSection">
-        <div class ="holder entry">
-          <div class = "title">Your Trip Details</div>
-          <div id = "entryHolder">
-            <div id = "destinationResults"></div>
-            <div id = "destinationImg"></div>
-            <div id = "weather"></div>
+        <div class="holder entry">
+          <div class="title">Your Trip Details</div>
+          <div id="entryHolder">
+            <div id="destinationResults"></div>
+            <div id="destinationImg"></div>
+            <div id="weather"></div>
           </div>
         </div>
       </section> 
