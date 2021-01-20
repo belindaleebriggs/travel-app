@@ -45,4 +45,4 @@ function getDestinationImg(req) {
             console.log('error ', error);
             //appropriately handle error
           }
-  }
+        }

@@ -13,6 +13,9 @@
   "license": "ISC",
   "description": "A travel app that obtains a desired trip location & date from the user, and displays weather and an image of the location using information obtained from external APIs.",
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.12.10",
+    "@babel/runtime": "^7.12.5",
+    "babel": "^6.23.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",

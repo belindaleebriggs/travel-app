@@ -52,5 +52,4 @@ async function qryWeatherbit(baseURL, lat, lon, key) {
           console.log('error ', error);
           //appropriately handle error
         }
-}
-            
+}        
