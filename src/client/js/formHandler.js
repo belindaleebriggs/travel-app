@@ -10,8 +10,10 @@ async function handleSubmit(event) {
     let formData = {};
 
     // put data from form into an object to pass to API calling fxns
-    formData.destination = document.getElementById('destination').value;
+    formData.destination = document.getElementById('destination').value; 
     formData.departureDate = document.getElementById('departureDate').value;
+
+    console.log(`formData value:` + JSON.stringify(formData));
     
   
   // Reset answer area to clear out formatting if entering a new url
@@ -19,7 +21,7 @@ async function handleSubmit(event) {
     results.innerHTML = "Your results will appear here.";
     
         console.log('Trying to launch getTripDetails from formHandler!')
-        console.log(`formHandler: Form data entered: Destination - ${formData.formData.destination} and Departure Date - ${formData.formData.departureDate}`)
+        console.log(`formHandler: Form data entered: Destination - ${formData.destination} and Departure Date - ${formData.departureDate}`)
         await fetch(`http://localhost:${port}/getTripDetails`, {
                 method: 'POST',
                 credentials: 'same-origin',

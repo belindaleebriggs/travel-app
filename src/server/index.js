@@ -50,8 +50,8 @@ app.get('/', function (req, res) {
 // Route used by formHandler to access call to Geonames API via getCoordinates.js
 app.post('/getTripDetails', function(req, res) {
   try {
-  let tripData = req.body.formData;
-  console.log(`Server Index.js: Trip Data delivered from formHandler: ${tripData}`)
+  let tripData = req.body;
+  console.log(`Server Index.js: Trip Data delivered from formHandler: ${JSON.stringify(tripData)}`)
   getTripDetails(tripData) 
   .then((data) => { res.send(data)});
 } catch (error) {
@@ -72,13 +72,13 @@ async function getTripDetails(tripData) {
   };
 
   // START GET COORDINATES
-  async function getCoordinates(req) {
+  async function getCoordinates(tripData) {
 
     // Query Geonames API with destination to get it's longitude and latitude
-    let tripData = req.body;
+    console.log(`tripData delivered to getCoordinates: ${JSON.stringify(tripData)}`)
     let baseURL = 'api.geonames.org/search?';
     let user = '?user=' + process.env.GEONAMES_USER;
-    let destination = req.body.formData.destination
+    let destination = tripData.formData.destination
 
     console.log("::: getCoordinates is querying Geonames API for the coordinates of : ", destination);
     
@@ -91,7 +91,7 @@ async function getTripDetails(tripData) {
             tripData.long = newData.long;
             console.log(`Trip Location Latitude: ${tripData.lat}`);
             console.log(`Trip Location Latitude: ${tripData.long}`);
-            console.log(`Trip Data: ${tripData}`)
+            console.log(`Trip Data: ${JSON.stringify(tripData)}`)
             res.send(tripData)
             })
         } catch (error) {
@@ -133,8 +133,8 @@ async function getTripDetails(tripData) {
   
     let baseURL = 'api.Pixabay.org/search?';
     let key = '?key=' + process.env.PIXABAY_API_KEY; 
-    let destination = req.body.formData.destination
-    console.log("::: getdestinationImg is querying Pixabay API for the coordinates of : ", formData.destination);
+    let destination = req.body.destination
+    console.log("::: getdestinationImg is querying Pixabay API for the coordinates of : ", destination);
     
     try { 
       let newData = qryPixabay(baseURL, encodeURIComponent(destination), key)
@@ -175,26 +175,25 @@ async function getTripDetails(tripData) {
 
 
   // START GET FORECAST
-  async function getForecast(formData) {
-    console.log("::: getCoordinates is querying Geonames API for the coordinates of : ", destination);
+  async function getForecast(tripData) {
+    console.log("::: getCoordinates is querying Geonames API for the coordinates of : ", tripdata.destination);
     // Query Weatherbit API with destination
-    let tripData = req.body;
-  
+      
     let currentWeatherURL = 'http://api.weatherbit.io/v2.0/current';
     let futureWeatherURL = 'http://api.weatherbit.io/v2.0/forecast/daily';
   
     let baseURL = () => {
-        if ((Date - formText.departureDate) < 7) {
+        if ((Date - tripData.departureDate) < 7) {
         return currentWeatherURL
         } else { return futureWeatherURL }
         };
   
     let apiKey = '?key=' + process.env.WEATHERBIT_API_KEY;
-    let lat = req.body.formData.lat;
-    let lon = req.body.formDatalon;
+    let lat = tripData.lat;
+    let lon = tripData.lon;
                 
     try { 
-      let newData = qryWeatherbit(baseURL, lat, lon, key)
+      let newData = qryWeatherbit(baseURL, lat, lon, apiKey)
       .then(function(newData) { 
             
       // Add data to data object in server.js via POST request
