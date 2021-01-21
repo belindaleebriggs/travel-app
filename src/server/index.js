@@ -1,6 +1,3 @@
-// Setup empty JS object to act as endpoint for all routes
-tripData = {}; // DO I NEED THIS?
-
 // Express to run server and routes
 // Change when moving to environments (8080 dev, 8081 prod)
 const port = 8081;
@@ -50,8 +47,11 @@ app.get('/', function (req, res) {
 // Route used by formHandler to access call to Geonames API via getCoordinates.js
 app.post('/getTripDetails', function(req, res) {
   try {
-  let tripData = req.body;
-  console.log(`Server Index.js: Trip Data delivered from formHandler: ${JSON.stringify(tripData)}`)
+  // Setup empty JS object to act as endpoint and data transfer for getTripDetails
+  let tripData = {};
+  tripData = req.body.formData;
+  console.log(`Server/Index.js: Trip Data delivered from formHandler: ${JSON.stringify(tripData)}`)
+
   getTripDetails(tripData) 
   .then((data) => { res.send(data)});
 } catch (error) {
@@ -60,165 +60,132 @@ app.post('/getTripDetails', function(req, res) {
   } 
 })
 
+
+// HANDLER FUNCTIONS
+
+// Main Function for Route /getTripDetails
 async function getTripDetails(tripData) {
-  try {
-    await getCoordinates(tripData);
-    await getForecast(res);
-    await getDestinationImg(res);
-    return res; // do i need this?
-  } catch(error) {
-    console.log('error ', error);
-    }
-  };
-
-  // START GET COORDINATES
-  async function getCoordinates(tripData) {
-
-    // Query Geonames API with destination to get it's longitude and latitude
-    console.log(`tripData delivered to getCoordinates: ${JSON.stringify(tripData)}`)
-    let baseURL = 'api.geonames.org/search?';
-    let user = '?user=' + process.env.GEONAMES_USER;
-    let destination = tripData.formData.destination
-
-    console.log("::: getCoordinates is querying Geonames API for the coordinates of : ", destination);
-    
-    try { 
-          let newData = qryGeonames(baseURL, encodeURIComponent(destination), user)
-          .then(function(newData) { 
-    
-            // Add data to data object in server.js via POST request
-            tripData.lat = newData.lat;
-            tripData.long = newData.long;
-            console.log(`Trip Location Latitude: ${tripData.lat}`);
-            console.log(`Trip Location Latitude: ${tripData.long}`);
-            console.log(`Trip Data: ${JSON.stringify(tripData)}`)
-            res.send(tripData)
-            })
-        } catch (error) {
-            console.log('error ', error);
-            //appropriately handle error
-          } 
-  };
-    
-    // FUNCTIONS CALLED TO FULFILL formHandler qryGeonames request
-    // function to make API call to Geonames Sentiment API
-    async function qryGeonames(baseURL, destination, user) {
-        console.log('Querying Geonames')
-        const outputFormat = '&of=json';
-        const name = '&name_equals=' + destination;
-        const language = '&lang=en';
-        const returnRows = '&maxRows=1'
-        const apiUrl = baseURL + name + returnRows + language + outputFormat;
-        console.log(apiUrl);
-        const res = await fetch(apiUrl);
-        try {
-          const data = await res.json();
-          return data;
-        } catch (error) {
-          console.log('error ', error);
-          //appropriately handle error
-        }
-      }
-  // END GET COORDINATES
+  await getForecast(tripData)
+    .then((data) => {
+        tripData.weather = data;
+      })
+  await getDestinationImg(tripData)
+    .then ((data) => {
+        tripData.destinationImgURL = data;
+        return tripData;
+      })
+  .catch((error) => 
+    console.log('error ', error)
+    )};
 
 
-  // START GET DESTINATION IMG
-  function getDestinationImg(req) {
-  
-    // Query Pixabay API with destination
-    // put returned values for longitude and latitude into a new object called coordinates
-    // eg. let coordinates = { response.lat, 
-    //                         response.long  }
-    // return this object to the calling procedure
-  
-    let baseURL = 'api.Pixabay.org/search?';
-    let key = '?key=' + process.env.PIXABAY_API_KEY; 
-    let destination = req.body.destination
-    console.log("::: getdestinationImg is querying Pixabay API for the coordinates of : ", destination);
-    
-    try { 
-      let newData = qryPixabay(baseURL, encodeURIComponent(destination), key)
-      .then(function(newData) { 
-            
-        // Add data to data object in server.js via POST request
-        tripData.imgURL = newData.hits[0].webformatURL;
-        console.log(`Trip Img URL: ${tripData.imgURL}`);
-        console.log(`Trip Data: ${tripData}`)
-        res.send(tripData)
-        })
-        } catch (error) {
-          console.log('error ', error);
-          //appropriately handle error
-          } 
-      };
-                  
-    // FUNCTIONS CALLED TO FULFILL formHandler qryGeonames request
-    // function to make API call to Geonames Sentiment API
-    async function qryPixabay(baseURL, destination, key) {
-      console.log('Querying Pixabay')
-      const language = '&lang=en';
-      const apiKey = `&key=${key}`;
-      const query = `q=${destination}`;
-      const safe = `safesearch=true`
-      const apiUrl = baseURL + query + language + safe + apiKey;
-      console.log(apiUrl);
-      const res = await fetch(apiUrl);
-        try {
-          const data = await res.json();
-            return data;
-          }catch (error) {
-              console.log('error ', error);
-              //appropriately handle error
-            }
-    }
-  // END GET DESTINATION IMG
-
-
-  // START GET FORECAST
-  async function getForecast(tripData) {
-    console.log("::: getCoordinates is querying Geonames API for the coordinates of : ", tripdata.destination);
-    // Query Weatherbit API with destination
-      
+  // START GET FORECAST - 2ndary Fxn for getTripDetails
+  async function getForecast(tripData) {     
+    let apiKey = '?key=' + process.env.WEATHERBIT_API_KEY;     
     let currentWeatherURL = 'http://api.weatherbit.io/v2.0/current';
     let futureWeatherURL = 'http://api.weatherbit.io/v2.0/forecast/daily';
+    let destination = tripData.destination;
   
     let baseURL = () => {
         if ((Date - tripData.departureDate) < 7) {
         return currentWeatherURL
         } else { return futureWeatherURL }
         };
-  
-    let apiKey = '?key=' + process.env.WEATHERBIT_API_KEY;
-    let lat = tripData.lat;
-    let lon = tripData.lon;
-                
-    try { 
-      let newData = qryWeatherbit(baseURL, lat, lon, apiKey)
-      .then(function(newData) { 
             
-      // Add data to data object in server.js via POST request
-      tripData.weather = newData.weather;
-      console.log(`Trip Weather Details: ${tripData.weather}`);
-      console.log(`Trip Data: ${tripData}`)
-      res.send(tripData)
+    try { 
+      qryWeatherbit(destination, baseURL, apiKey)
+      .then(function(data) { 
+          res.send(data.weather)
       })
       } catch (error) {
         console.log('error ', error);
         //appropriately handle error
         } 
     };
+// END GET FORECAST
+    
+
+// API CALL TO WEATHERBIT - 2ndary Fxn for getForecast
+async function qryWeatherbit(destination, baseURL,key) {
+  // Get coordinates for using Geonames API 
+  let coordinates = await getCoordinates(destination);
+  
+  // use coordinates to get weather from Weatherbit API
+  const latitude = `&lat=${coordinates.lat}`;
+  const longitude = `&lon=${coordinates.lon}`;
+  const language = '&lang=en';
+  const units = '&units=I';
+  const apiKey = `&key=${key}`;
+  const days = `days=7`;
+  const apiUrl = baseURL + language + units + days + latitude + longitude + apiKey;
+
+  console.log(`Querying Weatherbit with: ${apiUrl}`);
+
+  const res = await fetch(apiUrl);
+  const data = await res.json();
+  return data; 
+  };
+
+//END API CALL TO WEATHERBIT 
+
+// START GET COORDINATES -   2ndary Fxn for qryWeatherbit
+// Query Geonames API with destination to get it's longitude and latitude for Weatherbit API
+async function getCoordinates(destination) {
+  let coordinates = {}; //object to store coordinates
+  const baseURL = 'http://api.geonames.org/searchJSON?';
+  let user = `&username=${process.env.GEONAMES_USER}`;  //THIS IS NOT PULLING THE USER NAME IN
+  let name = `&name_equals=${encodeURIComponent(destination)}`;
+  const outputFormat = '&of=json';
+  const language = '&lang=en';
+  const returnRows = '&maxRows=1'
+  let apiUrl = baseURL + name + returnRows + language + outputFormat + user;
+
+  console.log(`::: getCoordinates is querying Geonames API for the coordinates of: ${destination} via ${apiUrl}`);
+  
+  try { 
+    let res = await fetch(apiUrl);
+    let apiData = await res.json();
+    console.log(`getCoordinates Geonames API returned data: ${JSON.stringify(apiData)}`);
+    coordinates.lat = apiData.geonames.lat;
+    coordinates.lon = apiData.geonames.lng;
+    return coordinates;
+  } catch (error) {
+          console.log('error ', error);
+          //appropriately handle error
+         }
+};
+  
+// END GET COORDINATES
+ 
+// START GET DESTINATION IMG - 2ndary Fxn for getTripDetails
+async function getDestinationImg(tripData) {
+  let baseURL = 'api.Pixabay.org/search?';
+  let key = '?key=' + process.env.PIXABAY_API_KEY; 
+  // let destination = tripData.destination;
+//  let encDestination = encodeURIComponent(destination)
+  console.log(`::: getdestinationImg is querying Pixabay API for the coordinates of : ${tripData}`);
+  
+  try { 
+    qryPixabay(baseURL, encDestination, key)
+    .then(function(data) { 
+      res.send(data.hits[0].webformatURL)
+      })
+      } catch (error) {
+        console.log('error ', error);
+        //appropriately handle error
+        } 
+    };
+
+  // END GET DESTINATION IMG
                 
-  // FUNCTIONS CALLED TO FULFILL formHandler qryGeonames request
-  // function to make API call to Geonames Sentiment API
-  async function qryWeatherbit(baseURL, lat, lon, key) {
-    console.log('Querying Weatherbit')
-    const latitude = `&lat=${lat}`;
-    const longitude = `&lon=${lon}`;
+  // API Call to Pixabay - 2ndary Fxn for getDestinationImg
+  async function qryPixabay(baseURL, destination, key) {
+    console.log('Querying Pixabay')
     const language = '&lang=en';
-    const units = '&units=I';
     const apiKey = `&key=${key}`;
-    const days = `days=7`;
-    const apiUrl = baseURL + language + units + days + latitude + longitude  + apiKey;
+    const query = `q=${destination}`;
+    const safe = `safesearch=true`
+    const apiUrl = baseURL + query + language + safe + apiKey;
     console.log(apiUrl);
     const res = await fetch(apiUrl);
       try {
@@ -228,30 +195,5 @@ async function getTripDetails(tripData) {
             console.log('error ', error);
             //appropriately handle error
           }
-  }
-  //END GET FORECAST
-
-
-
-/* ORIGINAL INDEX.JS
-
-// Callback function for GET /all, returns projectData
-function sendData(req,res) {
-  res.send(projectData);
-}
-
-// Initialize all route with a callback function
-app.get('/all', sendData);
-
-// POST Route for adding data
-function addData(req, res) {
-      const data = req.body;
-      console.log(`Request Body is: ${Object.values(data)}`);
-      projectData["date"] = data.date;
-      projectData["userResponse"] = data.feelings;
-      projectData["temperature"] = data.temp;
-      res.send(projectData);
-      console.log(`Project Data is: ${Object.values(projectData)}`);
-  }
-
-app.post('/add', addData); */
+  };
+// END QRY PIXABAY
