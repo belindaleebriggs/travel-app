@@ -67,7 +67,7 @@ async function getTripDetails(tripData) {
   await getForecast(tripData)
     .then((data) => {
         tripData.weather = data;
-        console.log(`::: getForecast returned weather of: ${tripData.weather}`);
+        console.log(`::: getForecast returned weather of: ${JSON.stringify(tripData.weather)}`);
       })
   await getDestinationImg(tripData)
     .then ((data) => {
@@ -107,9 +107,10 @@ async function getTripDetails(tripData) {
     const apiUrl = baseURL + language + units + days + latitude + longitude + apiKey;
 
     const res = await fetch(apiUrl);
-    const data = await res.json();
-    console.log(`::: Weatherbit returned api data: ${JSON.stringify(data)}`);
-    return data; 
+    const weatherbit = await res.json();
+    let weather = weatherbit.data[0].weather
+    console.log(`::: weatherbit returned the weather to getForcast: ${JSON.stringify(weather)}`);
+    return weather; 
   } catch (error) {
     console.log('error ', error);
     //appropriately handle error
