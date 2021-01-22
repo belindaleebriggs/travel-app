@@ -31,8 +31,7 @@ var path = require('path');
 
 const server = app.listen(port, listening);  
 function listening() {
-    console.log(`Server running`);
-    console.log(`listening on localhost: ${port}!`);
+    console.log(`::: Server running: listening on localhost: ${port}!`);
 }
 
 console.log(__dirname)
@@ -50,7 +49,7 @@ app.post('/getTripDetails', function(req, res) {
   // Setup empty JS object to act as endpoint and data transfer for getTripDetails
   let tripData = {};
   tripData = req.body.formData;
-  console.log(`Server/Index.js: Trip Data delivered from formHandler: ${JSON.stringify(tripData)}`)
+  console.log(`::: Server/Index.js: Trip Data delivered from formHandler: ${JSON.stringify(tripData)}`)
 
   getTripDetails(tripData) 
   .then((data) => { res.send(data)});
@@ -68,10 +67,12 @@ async function getTripDetails(tripData) {
   await getForecast(tripData)
     .then((data) => {
         tripData.weather = data;
+        console.log(`::: getForecast returned weather of: ${tripData.weather}`);
       })
   await getDestinationImg(tripData)
     .then ((data) => {
         tripData.destinationImgURL = data;
+        console.log(`::: tripData should now have forecast and imgURL: ${JSON.stringify(tripData)}`);
         return tripData;
       })
   .catch((error) => 
@@ -85,23 +86,22 @@ async function getTripDetails(tripData) {
     let currentWeatherURL = 'http://api.weatherbit.io/v2.0/current';
     let futureWeatherURL = 'http://api.weatherbit.io/v2.0/forecast/daily';
     let destination = tripData.destination;
-  
-    let baseURL = () => {
-        if ((Date - tripData.departureDate) < 7) {
-        return currentWeatherURL
-        } else { return futureWeatherURL }
-        };
+    let baseURL = "";
+
+    if ((Date - tripData.departureDate) < 7) {
+        baseURL = currentWeatherURL
+      } else { baseURL = futureWeatherURL };
             
     try { 
       qryWeatherbit(destination, baseURL, apiKey)
       .then(function(data) { 
-          res.send(data.weather)
+          return data.weather;
       })
       } catch (error) {
         console.log('error ', error);
         //appropriately handle error
-        } 
-    };
+        }
+      }; 
 // END GET FORECAST
     
 
@@ -119,7 +119,7 @@ async function qryWeatherbit(destination, baseURL,key) {
   const days = `days=7`;
   const apiUrl = baseURL + language + units + days + latitude + longitude + apiKey;
 
-  console.log(`Querying Weatherbit with: ${apiUrl}`);
+  console.log(`::: Querying Weatherbit with: ${apiUrl}`);
 
   const res = await fetch(apiUrl);
   const data = await res.json();
@@ -139,15 +139,14 @@ async function getCoordinates(destination) {
   const language = '&lang=en';
   const returnRows = '&maxRows=1'
   let apiUrl = baseURL + name + returnRows + language + outputFormat + user;
-
-  console.log(`::: getCoordinates is querying Geonames API for the coordinates of: ${destination} via ${apiUrl}`);
   
   try { 
     let res = await fetch(apiUrl);
     let apiData = await res.json();
-    console.log(`getCoordinates Geonames API returned data: ${JSON.stringify(apiData)}`);
+    console.log(`::: getCoordinates Geonames API returned data: ${JSON.stringify(apiData)}`);
     coordinates.lat = apiData.geonames.lat;
     coordinates.lon = apiData.geonames.lng;
+    console.log(`::: Coordinates retrieved from Geonames API: ${JSON.stringify(coordinates)}`)
     return coordinates;
   } catch (error) {
           console.log('error ', error);
@@ -159,41 +158,22 @@ async function getCoordinates(destination) {
  
 // START GET DESTINATION IMG - 2ndary Fxn for getTripDetails
 async function getDestinationImg(tripData) {
-  let baseURL = 'api.Pixabay.org/search?';
+  let baseURL = 'https://pixabay.com/api/';
   let key = '?key=' + process.env.PIXABAY_API_KEY; 
-  // let destination = tripData.destination;
-//  let encDestination = encodeURIComponent(destination)
-  console.log(`::: getdestinationImg is querying Pixabay API for the coordinates of : ${tripData}`);
+  const query = `&q=${tripData.destination}`;
+  const language = '&lang=en';
+  const safe = `safesearch=true`;
+  const type = `&image_type=photo`;
+  const apiUrl = baseURL + key + query + language + safe + type;
   
   try { 
-    qryPixabay(baseURL, encDestination, key)
-    .then(function(data) { 
-      res.send(data.hits[0].webformatURL)
-      })
-      } catch (error) {
-        console.log('error ', error);
-        //appropriately handle error
-        } 
+    let res = await fetch(apiUrl);
+    let data = await res.json();
+    console.log(`::: getdestinationImg retrieved image url: ${data.hits[0].webformatURL}`);
+    return data.hits[0].webformatURL;
+  } catch (error) {
+    console.log('error ', error);
+     //appropriately handle error
+      } 
     };
-
-  // END GET DESTINATION IMG
-                
-  // API Call to Pixabay - 2ndary Fxn for getDestinationImg
-  async function qryPixabay(baseURL, destination, key) {
-    console.log('Querying Pixabay')
-    const language = '&lang=en';
-    const apiKey = `&key=${key}`;
-    const query = `q=${destination}`;
-    const safe = `safesearch=true`
-    const apiUrl = baseURL + query + language + safe + apiKey;
-    console.log(apiUrl);
-    const res = await fetch(apiUrl);
-      try {
-        const data = await res.json();
-          return data;
-        }catch (error) {
-            console.log('error ', error);
-            //appropriately handle error
-          }
-  };
-// END QRY PIXABAY
+// END GET DESTINATION IMG
