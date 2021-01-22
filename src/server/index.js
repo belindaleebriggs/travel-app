@@ -82,51 +82,41 @@ async function getTripDetails(tripData) {
 
   // START GET FORECAST - 2ndary Fxn for getTripDetails
   async function getForecast(tripData) {     
-    let apiKey = '?key=' + process.env.WEATHERBIT_API_KEY;     
-    let currentWeatherURL = 'http://api.weatherbit.io/v2.0/current';
-    let futureWeatherURL = 'http://api.weatherbit.io/v2.0/forecast/daily';
     let destination = tripData.destination;
-    let baseURL = "";
 
+    try { 
+    // Get coordinates for using Geonames API 
+    let coordinates = await getCoordinates(destination);
+  
+    // use coordinates to get weather from Weatherbit API
+    const latitude = `&lat=${coordinates.lat}`;
+    const longitude = `&lon=${coordinates.lon}`;
+  
+    let currentWeatherURL = 'http://api.weatherbit.io/v2.0/current?';
+    let futureWeatherURL = 'http://api.weatherbit.io/v2.0/forecast/daily?';
+    let apiKey = '&key=' + process.env.WEATHERBIT_API_KEY;     
+  
+    let baseURL = "";
     if ((Date - tripData.departureDate) < 7) {
         baseURL = currentWeatherURL
       } else { baseURL = futureWeatherURL };
-            
-    try { 
-      qryWeatherbit(destination, baseURL, apiKey)
-      .then(function(data) { 
-          return data.weather;
-      })
-      } catch (error) {
-        console.log('error ', error);
-        //appropriately handle error
-        }
-      }; 
-// END GET FORECAST
     
+    const language = '&lang=en';
+    const units = '&units=I';
+    const days = `days=7`;
+    const apiUrl = baseURL + language + units + days + latitude + longitude + apiKey;
 
-// API CALL TO WEATHERBIT - 2ndary Fxn for getForecast
-async function qryWeatherbit(destination, baseURL,key) {
-  // Get coordinates for using Geonames API 
-  let coordinates = await getCoordinates(destination);
-  
-  // use coordinates to get weather from Weatherbit API
-  const latitude = `&lat=${coordinates.lat}`;
-  const longitude = `&lon=${coordinates.lon}`;
-  const language = '&lang=en';
-  const units = '&units=I';
-  const apiKey = `&key=${key}`;
-  const days = `days=7`;
-  const apiUrl = baseURL + language + units + days + latitude + longitude + apiKey;
+    const res = await fetch(apiUrl);
+    const data = await res.json();
+    console.log(`::: Weatherbit returned api data: ${JSON.stringify(data)}`);
+    return data; 
+  } catch (error) {
+    console.log('error ', error);
+    //appropriately handle error
+}
+};
 
-  console.log(`::: Querying Weatherbit with: ${apiUrl}`);
-
-  const res = await fetch(apiUrl);
-  const data = await res.json();
-  return data; 
-  };
-
-//END API CALL TO WEATHERBIT 
+//END GET FORECAST
 
 // START GET COORDINATES -   2ndary Fxn for qryWeatherbit
 // Query Geonames API with destination to get it's longitude and latitude for Weatherbit API
@@ -144,14 +134,14 @@ async function getCoordinates(destination) {
     let res = await fetch(apiUrl);
     let apiData = await res.json();
     console.log(`::: getCoordinates Geonames API returned data: ${JSON.stringify(apiData)}`);
-    coordinates.lat = apiData.geonames.lat;
-    coordinates.lon = apiData.geonames.lng;
+    coordinates.lat = apiData.geonames[0].lat;
+    coordinates.lon = apiData.geonames[0].lng;
     console.log(`::: Coordinates retrieved from Geonames API: ${JSON.stringify(coordinates)}`)
     return coordinates;
   } catch (error) {
           console.log('error ', error);
           //appropriately handle error
-         }
+    }
 };
   
 // END GET COORDINATES
