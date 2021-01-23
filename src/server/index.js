@@ -91,9 +91,13 @@ async function getTripDetails(tripData) {
     let apiKey = '&key=' + process.env.WEATHERBIT_API_KEY;     
   
     let baseURL = "";
-    if ((Date - tripData.departureDate) < 7) {
+    if (tripData.daysToTrip < 7) {
+      console.log('::: Getting Current Weather from Weatherbit');
         baseURL = currentWeatherURL
-      } else { baseURL = futureWeatherURL };
+      } else { 
+        console.log('::: Getting Future Weather from Weatherbit'); 
+        baseURL = futureWeatherURL 
+      };
     
     const language = '&lang=en';
     const units = '&units=I';
