@@ -50,8 +50,8 @@ function updateUI(data) {
   var destinationImg = document.getElementById('destinationImg');
   var weather = document.getElementById('weather');
 
-  intro.innerHTML =`Here is a preview of what you might see on your trip to ${formData.destination}.</br> And a preview of the weather for ${formData.departureDate}.`;
-  destinationImg.innerHTML = `<img class="medium-img" alt="Image of ${formData.destination} from Pixababy" src="${formData.imgURL}">`;
+  intro.innerHTML =`Here is a preview of what you might see on your trip to ${data.destination}.</br> And a preview of the weather for ${data.departureDate}.`;
+  destinationImg.innerHTML = `<img class="medium-img" alt="Image of ${data.destination} from Pixababy" src="${data.imgURL}">`;
 }
 
 // listen on Generate button to trigger handleSubmit fxn

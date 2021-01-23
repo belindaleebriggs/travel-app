@@ -64,20 +64,14 @@ app.post('/getTripDetails', function(req, res) {
 
 // Main Function for Route /getTripDetails
 async function getTripDetails(tripData) {
-  await getForecast(tripData)
-    .then((data) => {
-        tripData.weather = data;
-        console.log(`::: getForecast returned weather of: ${JSON.stringify(tripData.weather)}`);
-      })
-  await getDestinationImg(tripData)
-    .then ((data) => {
-        tripData.destinationImgURL = data;
-        console.log(`::: tripData should now have forecast and imgURL: ${JSON.stringify(tripData)}`);
-        return tripData;
-      })
-  .catch((error) => 
-    console.log('error ', error)
-    )};
+  tripData.weather = await getForecast(tripData);
+  console.log(`::: getForecast returned weather of: ${JSON.stringify(tripData.weather)}`);
+  
+  tripData.destinationImgURL = await getDestinationImg(tripData);
+  console.log(`::: tripData should now have forecast and imgURL: ${JSON.stringify(tripData)}`);
+  
+  return tripData;
+};
 
 
   // START GET FORECAST - 2ndary Fxn for getTripDetails
