@@ -1,7 +1,7 @@
 /* Global Variables */
 // designates what port the app will listen to for incoming requests
 // Change when moving to environments (8080 dev, 8081 prod)
-const port = 8081
+const port = 8081;
 
 async function handleSubmit(event) {
   event.preventDefault()
@@ -50,8 +50,8 @@ function updateUI(data) {
   var destinationImg = document.getElementById('destinationImg');
   var weather = document.getElementById('weather');
 
-  intro.innerHTML =`Here is a preview of what you might see on your trip to ${data.destination}.</br> And a preview of the weather for ${data.departureDate}.`;
-  destinationImg.innerHTML = `<img class="medium-img" alt="Image of ${data.destination} from Pixababy" src="${data.imgURL}">`;
+  intro.innerHTML =`During your trip to ${data.destination}, the weather will be ${data.weather.description}.`;
+  destinationImg.innerHTML = `<img class="medium-img" alt="Image of ${data.destination} from Pixababy" src="${data.destinationImgURL}">`;
 }
 
 // listen on Generate button to trigger handleSubmit fxn
