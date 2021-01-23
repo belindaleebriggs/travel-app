@@ -45,12 +45,13 @@ async function handleSubmit(event) {
 function updateUI(data) {  
   var resultsSection = document.getElementById('resultsSection');
   resultsSection.className += " " + 'answered';
+  const iconURL = `https://www.weatherbit.io/static/img/icons/${data.weather.icon}.png`;
       
   var intro = document.getElementById('destinationResults');
   var destinationImg = document.getElementById('destinationImg');
   var weather = document.getElementById('weather');
 
-  intro.innerHTML =`During your trip to ${data.destination}, the weather will be ${data.weather.description}.`;
+  intro.innerHTML =`During your trip to ${data.destination}, the weather will be <img alt="weather icon" src="${iconURL}"> &nbsp; ${data.weather.description}.`;
   destinationImg.innerHTML = `<img class="medium-img" alt="Image of ${data.destination} from Pixababy" src="${data.destinationImgURL}">`;
 }
 

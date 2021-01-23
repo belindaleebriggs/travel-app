@@ -3,7 +3,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  color: var(--grey-800);
+  color: var(--gray-050);
 }
 
 
@@ -24,11 +24,10 @@ section {
     grid-template-rows: auto;
     column-gap: 15px;
     height:100vh;
-    background: #f23557;
-    color: #f0d43a;
+    background: var(--indigo-050);
+    color: var(--cyan-900);
     justify-content: center;
     grid-gap: .5em;
-    font-family: 'Oswald', sans-serif;
     padding: 15px;
 }
 

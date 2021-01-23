@@ -98,7 +98,7 @@ p {
     line-height: 2em;
 }
 
-
+/*
 #entryHolder{
 }
 
@@ -113,6 +113,7 @@ p {
 #content{
 
 }
+*/
 
 .headline {
   font-size: 3em;
@@ -122,6 +123,7 @@ p {
   font-size: 1.5em;
 
 }
+
 
 /*  Basic Styling To Override Default For Basic HTML Elements */
 label{
@@ -133,8 +135,8 @@ input{
     display:block;
     height: 60px;
     width: 320px;
-    background: var(--cyan-400);
-    color: var(--yellow-400);
+    background: var(--yellow-200);
+    color: var(--grey-900);
     font-size: 1.2em;
     border: none;
 }
@@ -142,11 +144,11 @@ input{
 button{
     width: 400px;
     height: 100px;
-    background: var(--gray-400);
-    color: var(--yellow-400);
+    background: var(--cyan-900);
+    color: var(--yellow-200);
     font-size: 2.5em;
     border: none;
-    box-shadow: 2px 4px 5px var(--gray-900);
+    box-shadow: 2px 4px 5px var(--grey-900);
     border-radius: 5px;
 }
 
@@ -164,14 +166,14 @@ button:focus {
 }
 /* Style for Placeholder Text*/
 ::placeholder { /* Firefox, Chrome, Opera */
-    color: var(--yellow-400);
+    color: var(--grey-400);
 
 }
 
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: var(--yellow-400);
+    color: var(--grey-400);
 }
 
 ::-ms-input-placeholder { /* Microsoft Edge */
-    color: var(--yellow-400);
+    color: var(--grey-400);
 }
