@@ -24,8 +24,6 @@ section {
     grid-template-rows: auto;
     column-gap: 15px;
     height:100vh;
-    background: var(--indigo-050);
-    color: var(--cyan-900);
     justify-content: center;
     grid-gap: .5em;
     padding: 15px;
@@ -43,7 +41,6 @@ section {
 
 }
 .entry{
-  background: rgba(59, 74, 107, .4);
   grid-row: 2 / 3;  grid-column: 2;
 }
 

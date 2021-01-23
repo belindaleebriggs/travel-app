@@ -15,9 +15,11 @@ async function handleSubmit(event) {
 
   console.log(`formData value:` + JSON.stringify(formData));
     
-  // Reset answer area to clear out formatting if entering a new url
-  var results = document.getElementById('weather');
-  results.innerHTML = "Your results will appear here.";
+  // Hide Forecast results area and clear out formatting when entering a new url
+  const forecastTitle = document.getElementById('forecastTitle');
+  forecastTitle.innerHTML = "<h2>Your Trip Forecast</h2>";
+  const results = document.getElementById('weather');
+  results.innerHTML = "Your forecast results will appear here shortly.";
     
   console.log('Trying to launch getTripDetails from formHandler!')
   console.log(`formHandler: Form data entered: Destination - ${formData.destination} and Departure Date - ${formData.departureDate}`)
