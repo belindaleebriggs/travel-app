@@ -8,27 +8,31 @@
   <main>
     <div id = "app">
     <section id="form">
-      <h1 class ="holder headline">Travel App</h1>
+      <h1 class="row1-col1-2 h1">Travel App</h1>
       <form class="" onsubmit="return Client.handleSubmit(event)">
-        <div id="tripErrorMsg" class="errorMsg"></div>
-        <div class ="holder tripDestination">
+        <div id="tripErrorMsg" class="errorMsg row1-col1-2"></div>
+        <div class ="holder tripDestination row2-col1-2">
           <label for="destination">Enter Travel Destination here</label>
           <input type="text" id="destination" placeholder="type city name here" required>
         </div>
-        <div class ="holder tripDetails">
+        <div class ="holder tripDetails row3-col1-2">
           <label for="departureDate">When are you going?</label>
           <input type="date" class="myInput" id="departureDate" placeholder="Select your departure date" required>
+        </div>
+        <div class=".row4-col1">
           <button id="generate" type="submit"> Get Trip Forecast </button>
         </div>
       </form>
       
       <section id="resultsSection">
         <div class="holder entry">
-          <div id="forecastTitle"></div>
+          <div id="forecastTitle" class="row5-col1-2 h2"></div>
           <div id="entryHolder">
-            <div id="weatherIcon"></div>
-            <div id="weather"></div>
-            <div id="destinationImg"></div>
+            <div id="weatherIcon" class="row6-col1"></div>
+            <div id="weather" class="row7-col1"></div>
+            <div id="countdownTitle" class="row6-col2"></div>
+            <div id="countdown" class="row7-col2"></div>
+            <div id="destinationImg" class="row8-col1-2"></div>
             </div>
         </div>
       </section> 

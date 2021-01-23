@@ -7,16 +7,16 @@
     
     // Colors
     // Primary
-    --cyan-050: #E0FCFF;
-    --cyan-100: #BEF8FD;
-    --cyan-200: #87EAF2;
-    --cyan-300: #54D1DB;
-    --cyan-400: #38BEC9;
-    --cyan-500: #2CB1BC;
-    --cyan-600: #14919B;
-    --cyan-700: #0E7C86;
-    --cyan-800: #0A6C74;
-    --cyan-900: #044E54;
+    --indigo-050: #E0E8F9;
+    --indigo-100: #BED0F7;
+    --indigo-200: #98AEEB;
+    --indigo-300: #7B93DB;
+    --indigo-400: #647ACB;
+    --indigo-500: #4C63B6;
+    --indigo-600: #4055A8;
+    --indigo-700: #35469C;
+    --indigo-800: #2D3A8C;
+    --indigo-900: #19216C;
   
     // Neutrals
     --grey-050: #F0F4F8;
@@ -31,16 +31,7 @@
     --grey-900: #102A43;
   
     // Supporting
-    --indigo-050: #E0E8F9;
-    --indigo-100: #BED0F7;
-    --indigo-200: #98AEEB;
-    --indigo-300: #7B93DB;
-    --indigo-400: #647ACB;
-    --indigo-500: #4C63B6;
-    --indigo-600: #4055A8;
-    --indigo-700: #35469C;
-    --indigo-800: #2D3A8C;
-    --indigo-900: #19216C;
+
   
     --pink-050: #FFE0F0;
     --pink-100: #FAB8D9;
@@ -63,17 +54,6 @@
     --red-700: #911111;
     --red-800: #780A0A;
     --red-900: #610404;
-  
-    --yellow-050: #FFFAEB;
-    --yellow-100: #FCEFC7;
-    --yellow-200: #F8E3A3;
-    --yellow-300: #F9DA8B;
-    --yellow-400: #F7D070;
-    --yellow-500: #E9B949;
-    --yellow-600: #C99A2E;
-    --yellow-700: #A27C1A;
-    --yellow-800: #7C5E10;
-    --yellow-900: #513C06;
   }
 // Fonts
 
@@ -94,38 +74,24 @@
     line-height: 1.8em;
     font-family: 'Nunito Sans', sans-serif;
 }
+
+.h3 {
+    font-size: 2em;
+    color: var(--grey-700);
+    line-height: 1.8em;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
 p {
     line-height: 2em;
+    color: var(--grey-800);
 }
 
-/*
-#entryHolder{
+footer p {
+    font-size: 11px;
+    color: var(--indigo-500);
 }
 
-#date{
-
-}
-
-#temp{
-
-}
-
-#content{
-
-}
-*/
-
-.headline {
-  font-size: 3em;
-
-}
-.title{
-  font-size: 1.5em;
-
-}
-
-
-/*  Basic Styling To Override Default For Basic HTML Elements */
 label{
     display:block;
     font-size: 1.5em;
@@ -135,7 +101,7 @@ input{
     display:block;
     height: 60px;
     width: 320px;
-    background: var(--yellow-200);
+    background: var(--indigo-050);
     color: var(--grey-900);
     font-size: 1.2em;
     border: none;
@@ -144,19 +110,22 @@ input{
 button{
     width: 400px;
     height: 100px;
-    background: var(--cyan-900);
-    color: var(--yellow-200);
-    font-size: 2.5em;
+    background: var(--indigo-500);
+    color: white;
+    font-size: 1.5em;
     border: none;
-    box-shadow: 2px 4px 5px var(--grey-900);
+    box-shadow: 2px 4px 5px var(--grey-400);
     border-radius: 5px;
 }
 
-textarea{
-    background: var(--cyan-400);
-    color: var(--yellow-400);
-    font-size: 1.2em;
+button:hover{
+    background: white;
+    color: var(--indigo-500);
+    border: solid 3px var(--indigo-500);
+    font-weight:bolder;
 }
+
+
 /* Reset style for HTML element on active to have no border*/
 input:focus,
 select:focus,
@@ -166,14 +135,14 @@ button:focus {
 }
 /* Style for Placeholder Text*/
 ::placeholder { /* Firefox, Chrome, Opera */
-    color: var(--grey-400);
+    color: var(--grey-500);
 
 }
 
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: var(--grey-400);
+    color: var(--grey-500);
 }
 
 ::-ms-input-placeholder { /* Microsoft Edge */
-    color: var(--grey-400);
+    color: var(--grey-500);
 }
