@@ -16,7 +16,7 @@ async function handleSubmit(event) {
   console.log(`formData value:` + JSON.stringify(formData));
     
   // Reset answer area to clear out formatting if entering a new url
-  var results = document.getElementById('destinationResults');
+  var results = document.getElementById('weather');
   results.innerHTML = "Your results will appear here.";
     
   console.log('Trying to launch getTripDetails from formHandler!')
@@ -47,11 +47,12 @@ function updateUI(data) {
   resultsSection.className += " " + 'answered';
   const iconURL = `https://www.weatherbit.io/static/img/icons/${data.weather.icon}.png`;
       
-  var intro = document.getElementById('destinationResults');
-  var destinationImg = document.getElementById('destinationImg');
   var weather = document.getElementById('weather');
+  var destinationImg = document.getElementById('destinationImg');
+  var weatherIcon = document.getElementById('weatherIcon');
 
-  intro.innerHTML =`During your trip to ${data.destination}, the weather will be <img alt="weather icon" src="${iconURL}"> &nbsp; ${data.weather.description}.`;
+  weather.innerHTML =`${data.weather.description}`;
+  weatherIcon.innerHTML =`<img alt="weather icon" src="${iconURL}">`;
   destinationImg.innerHTML = `<img class="medium-img" alt="Image of ${data.destination} from Pixababy" src="${data.destinationImgURL}">`;
 }
 
