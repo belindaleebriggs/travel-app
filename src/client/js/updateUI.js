@@ -20,6 +20,9 @@ function updateUI(data, testDom) {
   
     countdownTitle.innerHTML = `Your Trip Begins In:`;
     countdown.innerHTML = `<h3 alt="time until trip">${data.daysToTrip} Days</h3>`;
+
+    // Scroll results into view
+    resultsSection.scrollIntoView()
   
   }
 

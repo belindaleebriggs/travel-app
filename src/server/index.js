@@ -1,5 +1,3 @@
-module.exports = {app}  // for jest test
-
 // Express to run server and routes
 // Change when moving to environments (8080 dev, 8081 prod)
 const port = 8081;
