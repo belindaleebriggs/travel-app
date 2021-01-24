@@ -166,3 +166,5 @@ async function getDestinationImg(tripData) {
       } 
     };
 // END GET DESTINATION IMG
+
+{export app}  // for jest test

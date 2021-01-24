@@ -17,9 +17,10 @@ async function handleSubmit(event) {
     document.getElementById('tripErrorMsg').innerHTML = "You must enter a destination city and departure date.";
     return 
   } else {
+  
     // reset error message on each new submission
-    document.getElementById('tripErrorMsg').innerHTML = "";
-  calcDaysToTrip(formData);
+  document.getElementById('tripErrorMsg').innerHTML = "";
+  Client.calcDaysToTrip(formData);
 
   console.log(`formData value:` + JSON.stringify(formData));
     
@@ -44,7 +45,7 @@ async function handleSubmit(event) {
     // THIS AREA NEEDS WORK
   .then(res => res.json()) 
   .then(function(res) {
-      updateUI(res) })
+      Client.updateUI(res) })
   .catch(err => {
         console.log(err)
         document.getElementById('tripErrorMsg').innerHTML = 'Server Error: ' + err;
@@ -52,68 +53,10 @@ async function handleSubmit(event) {
 }
 };
 
-function calcDaysToTrip(formData) {
-  // Set the date we're counting down to
-  let countDownDate = new Date(formData.departureDate).getTime();
-  // Update the count down every 1 second
-  var x = setInterval(function() { 
-    // Get today's date and time
-    var now = new Date().getTime();
-
-    // Find the distance between now and the count down date
-    var distance = countDownDate - now;
-
-    // Time calculations for days, hours, minutes and seconds
-    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    //Set value of 
-    formData.daysToTrip = days;
-
-    // Display the result in the element with id="countdown"
-    document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
-  + minutes + "m " + seconds + "s ";
-
-  // If the count down is finished, write some text
-  if (distance < 0) {
-    clearInterval(x);
-    document.getElementById("countdown").innerHTML = "Date has passed";
-  }
-}, 1000);
-;};
-
-function updateUI(data) {
-
-  // Show and Format Results Section
-  var resultsSection = document.getElementById('resultsSection');
-  resultsSection.className += " " + 'answered';
-  
-  // Add Weather to UI
-  const iconURL = `https://www.weatherbit.io/static/img/icons/${data.weather.icon}.png`;
-      
-  var weather = document.getElementById('weather');
-  var destinationImg = document.getElementById('destinationImg');
-  var weatherIcon = document.getElementById('weatherIcon');
-
-  weather.innerHTML =`${data.weather.description}`;
-  weatherIcon.innerHTML =`<img alt="weather icon" src="${iconURL}">`;
-  destinationImg.innerHTML = `<img class="medium-img" alt="Image of ${data.destination} from Pixababy" src="${data.destinationImgURL}">`;
-  
-  // Add Countdown to UI
-  const countdownTitle = document.getElementById('countdownTitle');
-  const countdown = document.getElementById('countdown');
-
-  countdownTitle.innerHTML = `Your Trip Begins In:`;
-  countdown.innerHTML = `<h3 alt="time until trip">${data.daysToTrip} Days</h3>`;
-
-}
-
 // listen on Generate button to trigger handleSubmit fxn
 document.getElementById('generate').addEventListener('click', handleSubmit);
 
-export { handleSubmit, updateUI }
+export { handleSubmit }
 
 
 /* For Debugging Call getData and postData

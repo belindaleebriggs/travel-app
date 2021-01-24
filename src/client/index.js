@@ -1,5 +1,6 @@
 import { handleSubmit } from './js/formHandler'
-import { updateUI } from './js/formHandler'
+import { updateUI } from './js/updateUI'
+import { calcDaysToTrip } from './js/calcDaysToTrip'
 
 
 import './styles/resets.scss';
@@ -9,6 +10,7 @@ import './styles/form.scss';
 
 export { 
     handleSubmit,
-    updateUI
+    updateUI,
+    calcDaysToTrip
 }; 
 
