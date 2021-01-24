@@ -12,8 +12,14 @@ async function handleSubmit(event) {
   // put data from form into an object to pass to API calling fxns
   formData.destination = document.getElementById('destination').value; 
   formData.departureDate = document.getElementById('departureDate').value;
-  calcDaysToTrip(formData);
 
+  if (formData.destination === "" || formData.departureDate === "") {
+    document.getElementById('tripErrorMsg').innerHTML = "You must enter a destination city and departure date.";
+    return 
+  } else {
+    // reset error message on each new submission
+    document.getElementById('tripErrorMsg').innerHTML = "";
+  calcDaysToTrip(formData);
 
   console.log(`formData value:` + JSON.stringify(formData));
     
@@ -43,6 +49,7 @@ async function handleSubmit(event) {
         console.log(err)
         document.getElementById('tripErrorMsg').innerHTML = 'Server Error: ' + err;
          })
+}
 };
 
 function calcDaysToTrip(formData) {
@@ -98,7 +105,7 @@ function updateUI(data) {
   const countdownTitle = document.getElementById('countdownTitle');
   const countdown = document.getElementById('countdown');
 
-  countdownTitle.innerHTML = `Trip Begins In`;
+  countdownTitle.innerHTML = `Your Trip Begins In:`;
   countdown.innerHTML = `<h3 alt="time until trip">${data.daysToTrip} Days</h3>`;
 
 }

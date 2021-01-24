@@ -8,8 +8,8 @@
   <main>
     <div id = "app">
     <section id="form">
-      <h1 class="row1-col1-2 h1">Travel App</h1>
       <form class="" onsubmit="return Client.handleSubmit(event)">
+        <h1 class="row1-col1-2 h1">Travel App</h1>
         <div id="tripErrorMsg" class="errorMsg row1-col1-2"></div>
         <div class ="holder tripDestination row2-col1-2">
           <label for="destination">Enter Travel Destination here</label>
@@ -23,16 +23,17 @@
           <button id="generate" type="submit"> Get Trip Forecast </button>
         </div>
       </form>
+    </section>
       
       <section id="resultsSection">
         <div class="holder entry">
-          <div id="forecastTitle" class="row5-col1-2 h2"></div>
+          <div id="forecastTitle" class="row1-col1-2 h2"></div>
           <div id="entryHolder">
-            <div id="weatherIcon" class="row6-col1"></div>
-            <div id="weather" class="row7-col1"></div>
-            <div id="countdownTitle" class="row6-col2"></div>
-            <div id="countdown" class="row7-col2"></div>
-            <div id="destinationImg" class="row8-col1-2"></div>
+            <div id="weatherIcon" class="row2-col1-c"></div>
+            <div id="weather" class="row3-col1-c h3"></div>
+            <div id="countdownTitle" class="row2-col2-c"></div>
+            <div id="countdown" class="row3-col2-c h3"></div>
+            <div id="destinationImg" class="row4-col1-2"></div>
             </div>
         </div>
       </section> 
