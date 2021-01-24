@@ -1,3 +1,5 @@
+module.exports = {app}  // for jest test
+
 // Express to run server and routes
 // Change when moving to environments (8080 dev, 8081 prod)
 const port = 8081;
@@ -40,6 +42,11 @@ console.log(__dirname)
 app.get('/', function (req, res) {
     // res.sendFile('dist/index.html')
     res.sendFile(path.resolve('src/client/views/index.html'))
+})
+
+app.get('/test', function (req, res) {
+  // res.sendFile('dist/index.html')
+  res.sendFile(path.resolve('src/client/views/index.html'))
 })
 
 
@@ -166,5 +173,3 @@ async function getDestinationImg(tripData) {
       } 
     };
 // END GET DESTINATION IMG
-
-{export app}  // for jest test

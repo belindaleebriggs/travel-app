@@ -1,5 +1,4 @@
-function updateUI(data) {
-
+function updateUI(data, testDom) {
     // Show and Format Results Section
     var resultsSection = document.getElementById('resultsSection');
     resultsSection.className += " " + 'answered';
@@ -24,4 +23,10 @@ function updateUI(data) {
   
   }
 
-  export { updateUI }
+  function testForJest() { 
+    let a = 1;
+    let b = 2;
+    return (a + b)
+  }
+
+  export { updateUI, testForJest }
