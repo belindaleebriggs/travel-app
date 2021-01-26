@@ -23,7 +23,6 @@ function updateUI(data, testDom) {
 
     // Scroll results into view
     resultsSection.scrollIntoView()
-  
   }
 
   function testForJest() { 
